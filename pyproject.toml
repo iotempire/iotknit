@@ -25,4 +25,3 @@ dynamic = ["version"]
 #root="../.."
 version_scheme = "post-release"
 local_scheme = "node-and-date"
-write_to = "pkg/_version.py"
