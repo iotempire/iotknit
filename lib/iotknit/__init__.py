@@ -1,4 +1,4 @@
-# integriot __init__
+# iotknit __init__
 #
 # This allows you to easily build an integrator for binding mqtt
 # objects together.
@@ -9,7 +9,7 @@
 # Author: Ulrich Norbisrath (http://ulno.net)
 # Created: 2017-10-05
 
-from integriot import thingconnector
+from iotknit import thingconnector
 
 _stopped = False
 _main_devices = None

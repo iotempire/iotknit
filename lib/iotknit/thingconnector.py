@@ -5,7 +5,7 @@
 # Created: 2017-10-05
 
 
-from integriot import thingi
+from iotknit import thingi
 import paho.mqtt.client as mqtt
 
 
