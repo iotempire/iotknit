@@ -12,6 +12,14 @@ for this open source project here.
 It is a Python module and can be installed to your local
 Python environment the following way:
 
+Without cloning:
+
+.. code-block:: bash
+
+   pip install --upgrade git+https://github.com/iotempire/iotknit
+
+After cloneing this repo (from the repo directory):
+
 .. code-block:: bash
 
    pip install .
