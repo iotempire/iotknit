@@ -18,11 +18,11 @@ Without cloning:
 
    pip install --upgrade git+https://github.com/iotempire/iotknit
 
-After cloneing this repo (from the repo directory):
+After cloning this repo (from the repo directory):
 
 .. code-block:: bash
 
-   pip install .
+   pip install --upgrade .
 
 For building, run:
 
