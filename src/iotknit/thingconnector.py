@@ -5,14 +5,31 @@
 # Created: 2017-10-05
 
 
+import inspect
 from iotknit import thingi
 import paho.mqtt.client as mqtt
+
+
+def _create_mqtt_client():
+    # paho-mqtt 2.x expects callback_api_version while 1.x does not know it.
+    callback_api_version = getattr(mqtt, "CallbackAPIVersion", None)
+    if callback_api_version is None:
+        return mqtt.Client()
+    callback_version = callback_api_version.VERSION1
+    try:
+        supports_keyword = "callback_api_version" in inspect.signature(
+            mqtt.Client).parameters
+    except (TypeError, ValueError):
+        supports_keyword = False
+    if supports_keyword:
+        return mqtt.Client(callback_api_version=callback_version)
+    return mqtt.Client(callback_version)
 
 
 class ThingConnector():
     def __init__(self, mqtt_host):
         # TODO: add username/password/tsl
-        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+        self.client = _create_mqtt_client()
         self.client.connect(mqtt_host)  # need to connect before subscribe
         # TODO: implement re-connect
         self.mqtt_host = mqtt_host
