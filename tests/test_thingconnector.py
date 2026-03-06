@@ -46,8 +46,8 @@ class ThingConnectorClientInitTests(unittest.TestCase):
     def test_uses_keyword_callback_api_version_when_supported(self):
         calls = []
 
-        def client(*args, **kwargs):
-            calls.append((args, kwargs))
+        def client(callback_api_version=None):
+            calls.append(callback_api_version)
             return object()
 
         fake_mqtt = types.SimpleNamespace(
@@ -57,15 +57,13 @@ class ThingConnectorClientInitTests(unittest.TestCase):
         with patch.object(thingconnector, "mqtt", fake_mqtt):
             thingconnector._create_mqtt_client()
 
-        self.assertEqual(calls, [((), {"callback_api_version": "v1"})])
+        self.assertEqual(calls, ["v1"])
 
     def test_falls_back_to_positional_callback_api_version(self):
         calls = []
 
-        def client(*args, **kwargs):
-            if kwargs:
-                raise TypeError("unexpected keyword")
-            calls.append((args, kwargs))
+        def client(*args):
+            calls.append(args)
             return object()
 
         fake_mqtt = types.SimpleNamespace(
@@ -75,7 +73,7 @@ class ThingConnectorClientInitTests(unittest.TestCase):
         with patch.object(thingconnector, "mqtt", fake_mqtt):
             thingconnector._create_mqtt_client()
 
-        self.assertEqual(calls, [(("v1",), {})])
+        self.assertEqual(calls, [("v1",)])
 
 
 if __name__ == "__main__":

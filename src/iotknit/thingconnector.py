@@ -5,6 +5,7 @@
 # Created: 2017-10-05
 
 
+import inspect
 from iotknit import thingi
 import paho.mqtt.client as mqtt
 
@@ -14,10 +15,15 @@ def _create_mqtt_client():
     callback_api_version = getattr(mqtt, "CallbackAPIVersion", None)
     if callback_api_version is None:
         return mqtt.Client()
+    callback_version = callback_api_version.VERSION1
     try:
-        return mqtt.Client(callback_api_version=callback_api_version.VERSION1)
-    except TypeError:
-        return mqtt.Client(callback_api_version.VERSION1)
+        supports_keyword = "callback_api_version" in inspect.signature(
+            mqtt.Client).parameters
+    except (TypeError, ValueError):
+        supports_keyword = False
+    if supports_keyword:
+        return mqtt.Client(callback_api_version=callback_version)
+    return mqtt.Client(callback_version)
 
 
 class ThingConnector():
